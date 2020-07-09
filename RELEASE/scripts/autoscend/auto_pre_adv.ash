@@ -503,12 +503,16 @@ boolean auto_pre_adventure()
 	if (my_hp() <= (my_maxhp() * 0.75)) {
 		acquireHP();
 	}
-
-	int wasted_mp = my_mp() + mp_regen() - my_maxmp();
-	if(wasted_mp > 0 && my_mp() > 400)
+	
+	//my_mp is broken in Dark Gyffte
+	if (auto_my_path() != "Dark Gyffte")
 	{
-		auto_log_info("Burning " + wasted_mp + " MP...");
-		cli_execute("burn " + wasted_mp);
+		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
+		if(wasted_mp > 0 && my_mp() > 400)
+		{
+			auto_log_info("Burning " + wasted_mp + " MP...");
+			cli_execute("burn " + wasted_mp);
+		}
 	}
 	borisWastedMP();
 
