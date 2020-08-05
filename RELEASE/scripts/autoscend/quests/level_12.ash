@@ -1080,6 +1080,12 @@ boolean L12_sonofaBeach()
 	{
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
+	
+	//Uneffecting Cloak of Shadows nets us 15 combat
+	if ((my_class() == $class[Vampyre]) && (have_effect($effect[Cloak of Shadows])  > 0))
+	{
+		uneffect($effect[Cloak of Shadows]);
+	}
 
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
@@ -1107,7 +1113,17 @@ boolean L12_sonofaBeach()
 		}
 		asdonBuff($effect[Driving Obnoxiously]);
 
-		if(numeric_modifier("Combat Rate") < 0.0)
+		//Horse Modifier is so we correctly gauge our current combat rate, even though the horse isn't removed until
+		// pre-adventure
+		int horseModifier = 0;
+		if (get_property("_horsery") == "dark horse")
+		{
+			getHorse("return");
+			//We have specified we want no horse, so our combat modifier will be higher after pre-adventure
+			//but this won't be reflected in Combat Rate yet.
+			horseModifier = 5;
+		}
+		if(numeric_modifier("Combat Rate") + horseModifier < 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();
@@ -1220,7 +1236,13 @@ boolean L12_sonofaPrefix()
 	{
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
-
+	
+	//Uneffecting Cloak of Shadows nets us 15 combat
+	if ((my_class() == $class[Vampyre]) && (have_effect($effect[Cloak of Shadows]) > 0))
+	{
+		uneffect($effect[Cloak of Shadows]);
+	}
+	
 	if(auto_my_path() != "Live. Ascend. Repeat.")
 	{
 		if(equipped_item($slot[acc1]) == $item[over-the-shoulder folder holder])
@@ -1245,7 +1267,19 @@ boolean L12_sonofaPrefix()
 				equip($slot[Back], $item[Carpe]);
 			}
 		}
-		if(numeric_modifier("Combat Rate") < 0.0)
+		
+
+		//Horse Modifier is so we correctly gauge our current combat rate, even though the horse isn't removed until
+		// pre-adventure
+		int horseModifier = 0;
+		if (get_property("_horsery") == "dark horse")
+		{
+			getHorse("return");
+			//We have specified we want no horse, so our combat modifier will be higher after pre-adventure
+			//but this won't be reflected in Combat Rate yet.
+			horseModifier = 5;
+		}
+		if(numeric_modifier("Combat Rate") + horseModifier < 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate, we have: " + numeric_modifier("Combat Rate") + " and Lobsterfrogmen.", "red");
 			equipBaseline();

@@ -2021,7 +2021,7 @@ boolean doBedtime()
 			done = true;
 		}
 	}
-	if(!done)
+	if(!done && my_class() != $class[Vampyre])
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
 		if(auto_have_familiar($familiar[Stooper]) && (inebriety_left() == 0) && (my_familiar() != $familiar[Stooper]) && (auto_my_path() != "Pocket Familiars"))
@@ -2136,6 +2136,11 @@ boolean doBedtime()
 		if(is_unrestricted($item[Potted Tea Tree]) && !get_property("_pottedTeaTreeUsed").to_boolean() && (auto_get_campground() contains $item[Potted Tea Tree]))
 		{
 			auto_log_info("You have a tea tree to shake!", "blue");
+		}
+		
+		if ( my_class() == $class[Vampyre])
+		{
+			auto_log_warning("You May still be able to get overdrunk, but you're a Vampyre, and we don't like to deal with blood. You're on your own! Beep.", "red");
 		}
 
 		auto_log_info("You are probably done for today, beep.", "blue");
